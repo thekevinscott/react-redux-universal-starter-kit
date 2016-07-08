@@ -4,13 +4,14 @@
  */
 import createHistory from 'react-router/lib/createMemoryHistory';
 import { syncHistoryWithStore } from 'react-router-redux';
-import ApiClient from '../../helpers/ApiClient';
-import createStore from '../../redux/create';
-import getRoutes from '../../shared/routes';
 import { match } from 'react-router';
 
+import ApiClient from 'shared/helpers/ApiClient';
+import createStore from 'shared/redux/create';
+import getRoutes from 'shared/routes';
+
 import { hydrateOnClient } from '../utils';
-import config from '../../config';
+import config from 'config';
 
 import { loadOnServer } from 'redux-async-connect';
 import { Provider } from 'react-redux';

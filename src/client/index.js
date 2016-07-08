@@ -1,32 +1,26 @@
 import 'babel-polyfill';
 import React from 'react';
-import createStore from '../redux/create';
-import ApiClient from '../helpers/ApiClient';
 import { Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
-import { ReduxAsyncConnect } from 'redux-async-connect';
 import useScroll from 'scroll-behavior/lib/useStandardScroll';
 
-import getRoutes from '../shared/routes';
-
+import createStore from 'shared/redux/create';
+import ApiClient from 'shared/helpers/ApiClient';
+import getRoutes from 'shared/routes';
 import renderIntoDOM from './renderIntoDOM.jsx';
+import getReduxAsyncComponent from 'shared/redux/utils/getReduxAsyncComponent.jsx';
+import checkIfValidPayload from './checkIfValidPayload';
 
 const client = new ApiClient();
 const _browserHistory = useScroll(() => browserHistory)();
 const store = createStore(_browserHistory, client, window.__data);
 const history = syncHistoryWithStore(_browserHistory, store);
 
-const render = (props) => (
-  <ReduxAsyncConnect
-    {...props}
-    helpers={{client}}
-    filter={item => !item.deferred}
-  />
-);
-
 const component = (
   <Router
-    render={render}
+    render={(props) =>
+      getReduxAsyncComponent(props, { client }, item => !item.deferred)
+    }
     history={history}
   >
     {getRoutes(store)}
@@ -35,12 +29,7 @@ const component = (
 
 const dest = document.getElementById('content');
 
-if (process.env.NODE_ENV !== 'production') {
-  window.React = React; // enable debugger
-
-  if (!dest || !dest.firstChild || !dest.firstChild.attributes || !dest.firstChild.attributes['data-react-checksum']) {
-    console.error('Server-side React render was discarded. Make sure that your initial render does not contain any client-side code.');
-  }
-}
+// check to make sure the server payload was not discarded.
+checkIfValidPayload(dest);
 
 renderIntoDOM(component, store, dest);

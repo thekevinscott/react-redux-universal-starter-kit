@@ -1,5 +1,5 @@
 import React from 'react';
-import Html from '../../helpers/Html';
+import Html from 'shared/helpers/Html';
 import ReactDOM from 'react-dom/server';
 
 export default ({ assets, component, store }) => {

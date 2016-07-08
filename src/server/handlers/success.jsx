@@ -2,15 +2,15 @@ import React from 'react';
 import { ReduxAsyncConnect, loadOnServer } from 'redux-async-connect';
 import { Provider } from 'react-redux';
 import { renderToDom } from '../utils';
+import getReduxAsyncComponent from 'shared/redux/utils/getReduxAsyncComponent.jsx';
 
 export default (store, client, renderProps, isomorphicTools) => {
-  const helpers = {
-    client
-  };
   const serverArgs = {
     ...renderProps,
     store,
-    helpers,
+    helpers: {
+      client
+    },
   };
 
   return loadOnServer(serverArgs).then(() => {
@@ -18,9 +18,7 @@ export default (store, client, renderProps, isomorphicTools) => {
       <Provider
         store={store}
       >
-        <ReduxAsyncConnect
-          {...renderProps}
-        />
+        {getReduxAsyncComponent(renderProps)}
       </Provider>
     );
 

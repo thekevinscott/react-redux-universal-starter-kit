@@ -8,7 +8,7 @@
 
 import express from 'express';
 import React from 'react';
-import config from '../config';
+import config from 'config';
 
 import { ReduxAsyncConnect, loadOnServer } from 'redux-async-connect';
 

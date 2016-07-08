@@ -1,6 +1,6 @@
 import {
   hydrateOnClient
-} from '../utils/';
+} from 'server/utils/';
 
 export default (store) => {
   return new Promise((resolve) => {
