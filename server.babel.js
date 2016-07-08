@@ -1,15 +1,7 @@
-//  enable runtime transpilation to use ES6/7 in node
-
-var fs = require('fs');
-
-var babelrc = fs.readFileSync('./.babelrc');
-var config;
+var babelrc = require('fs').readFileSync('./.babelrc');
 
 try {
-  config = JSON.parse(babelrc);
+  require('babel-register')(JSON.parse(babelrc));
 } catch (err) {
-  console.error('==>     ERROR: Error parsing your .babelrc.');
-  console.error(err);
+  console.error('Error parsing .babelrc', err);
 }
-
-require('babel-register')(config);

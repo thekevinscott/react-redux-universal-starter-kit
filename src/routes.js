@@ -1,19 +1,11 @@
 import React from 'react';
-import {IndexRoute, Route} from 'react-router';
-import { isLoaded as isAuthLoaded, load as loadAuth } from 'redux/modules/auth';
+import { Route } from 'react-router';
 import {
   App,
-  Home
 } from 'containers';
 
-export default (store) => {
-  /**
-   * Please keep routes in alphabetical order
-   */
+export default () => {
   return (
-    <Route path="/" component={App}>
-      { /* Home (main) route */ }
-      <IndexRoute component={Home}/>
-    </Route>
+    <Route path="/" component={App} />
   );
 };

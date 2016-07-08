@@ -1,15 +1,20 @@
-import React, { Component, PropTypes } from 'react';
-import Helmet from 'react-helmet';
-import { push } from 'react-router-redux';
-import config from '../../config';
+import React, { Component } from 'react';
+import { asyncConnect } from 'redux-async-connect';
+
+@asyncConnect([{
+  promise: () => {
+    const promises = [];
+
+    return Promise.all(promises);
+  }
+}])
 
 export default class App extends Component {
+
   render() {
-    console.log('i am the app');
     return (
       <div>
-        I am the app.
-        {this.props.children}
+        App 3
       </div>
     );
   }
