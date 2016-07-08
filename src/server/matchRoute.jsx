@@ -9,10 +9,6 @@ import {
   handleSuccess,
 } from './handlers';
 
-import {
-  hydrateOnClient,
-} from './utils';
-
 const pretty = new PrettyError();
 
 const parseMatchedRoute = (error, redirectLocation, renderProps, client, req, store) => {

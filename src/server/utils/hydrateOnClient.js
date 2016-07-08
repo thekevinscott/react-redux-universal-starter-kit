@@ -1,8 +1,8 @@
 import renderToDom from './renderToDom';
 
-export default (store) => {
+export default (store, assets) => {
   return renderToDom({
-    assets: webpackIsomorphicTools.assets(), 
+    assets,
     store
   });
 };

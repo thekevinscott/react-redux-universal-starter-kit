@@ -9,12 +9,12 @@ import { match } from 'react-router';
 import { hydrateOnClient } from '../utils';
 import config from '../../config';
 
-export default (app) => {
+export default (app, isomorphicTools) => {
   app.use((req, res) => {
     if (__DEVELOPMENT__) {
       // Do not cache webpack stats: the script file would change since
       // hot module replacement is enabled in the development env
-      webpackIsomorphicTools.refresh();
+      isomorphicTools.refresh();
     }
 
     const client = new ApiClient(req);
@@ -23,7 +23,7 @@ export default (app) => {
     const history = syncHistoryWithStore(memoryHistory, store);
 
     if (config.DISABLE_SERVER_RENDERING) {
-      return res.send(hydrateOnClient(store));
+      return res.send(hydrateOnClient(store, isomorphicTools.assets()));
     }
 
     return match({

@@ -15,7 +15,7 @@ export default (isomorphicTools) => {
   const app = new express();
 
   configure(app);
-  handleRoutes(app);
+  handleRoutes(app, isomorphicTools);
   proxy(app, config);
   listen(app, config);
 }
