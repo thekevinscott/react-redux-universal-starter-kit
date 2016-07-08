@@ -13,7 +13,7 @@ const pretty = new PrettyError();
 
 const parseMatchedRoute = (error, redirectLocation, renderProps, client, req, store, isomorphicTools) => {
   if (redirectLocation) {
-    return handleRedirect( redirectLocation);
+    return handleRedirect(redirectLocation);
   } else if (error) {
     console.error(`Routing error: ${pretty.render(error)}`);
     return handleError(store, isomorphicTools);
