@@ -23,6 +23,7 @@ export default class CounterButton extends Component {
     className += ' btn btn-default';
     return (
       <button className={className} onClick={increment}>
+        And rock on!!!
         You have clicked me {count} time{count === 1 ? '' : 's'}.
       </button>
     );

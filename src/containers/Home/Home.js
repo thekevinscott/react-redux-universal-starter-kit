@@ -16,6 +16,8 @@ export default class Home extends Component {
           <div className="container">
             <div className={styles.logo}>
               <p>
+                FOOTBALL
+                Yessir
                 <img src={logoImage}/>
               </p>
             </div>
