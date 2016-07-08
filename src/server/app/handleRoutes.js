@@ -1,14 +1,12 @@
 import createHistory from 'react-router/lib/createMemoryHistory';
 import { syncHistoryWithStore } from 'react-router-redux';
-import ApiClient from '../helpers/ApiClient';
-import createStore from '../redux/create';
-import getRoutes from '../routes';
-import matchRoute from './matchRoute';
+import ApiClient from '../../helpers/ApiClient';
+import createStore from '../../redux/create';
+import getRoutes from '../../routes';
+import matchRoute from '../matchRoute';
 import { match } from 'react-router';
 
-import {
-  hydrateOnClient,
-} from './utils';
+import { hydrateOnClient } from '../utils';
 
 export default (app) => {
   app.use((req, res) => {
@@ -34,4 +32,3 @@ export default (app) => {
     }, matchRoute(res, store, client));
   });
 }
-
