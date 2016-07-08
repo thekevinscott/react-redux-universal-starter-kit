@@ -43,7 +43,7 @@ if (process.env.NODE_ENV !== 'production') {
   }
 }
 
-if (__DEVTOOLS__ && !window.devToolsExtension) {
+if (!window.devToolsExtension) {
   ReactDOM.render(
     <Provider store={store} key="provider">
       <div>

@@ -9,7 +9,7 @@ export default function createStore(history, client, data) {
   const middleware = [createMiddleware(client), reduxRouterMiddleware];
 
   let finalCreateStore;
-  if (__DEVELOPMENT__ && __CLIENT__ && __DEVTOOLS__) {
+  if (__DEVELOPMENT__ && __CLIENT__) {
     finalCreateStore = compose(
       applyMiddleware(...middleware),
       window.devToolsExtension ? window.devToolsExtension() : null,
