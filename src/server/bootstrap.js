@@ -3,7 +3,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/server';
 import config from '../config';
 import compression from 'compression';
-import httpProxy from 'http-proxy';
 import path from 'path';
 import createStore from '../redux/create';
 import ApiClient from '../helpers/ApiClient';
@@ -18,36 +17,15 @@ import createHistory from 'react-router/lib/createMemoryHistory';
 import {Provider} from 'react-redux';
 import getRoutes from '../routes';
 
-const targetUrl = 'http://' + config.apiHost + ':' + config.apiPort;
 const pretty = new PrettyError();
 const app = new Express();
 const server = new http.Server(app);
-const proxy = httpProxy.createProxyServer({
-  target: targetUrl,
-});
-
 app.use(compression());
 
 app.use(Express.static(path.join(__dirname, '..', 'static')));
 
-// Proxy to API server
-app.use('/api', (req, res) => {
-  proxy.web(req, res, {target: targetUrl});
-});
-
-// added the error handling to avoid https://github.com/nodejitsu/node-http-proxy/issues/527
-proxy.on('error', (error, req, res) => {
-  let json;
-  if (error.code !== 'ECONNRESET') {
-    console.error('proxy error', error);
-  }
-  if (!res.headersSent) {
-    res.writeHead(500, {'content-type': 'application/json'});
-  }
-
-  json = {error: 'proxy_error', reason: error.message};
-  res.end(JSON.stringify(json));
-});
+import proxy from './proxy';
+proxy(app, config);
 
 app.use((req, res) => {
   if (__DEVELOPMENT__) {
@@ -60,23 +38,33 @@ app.use((req, res) => {
   const store = createStore(memoryHistory, client);
   const history = syncHistoryWithStore(memoryHistory, store);
 
-  function hydrateOnClient() {
-    res.send('<!doctype html>\n' +
-      ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()} store={store}/>));
+  const renderToDom = (assets, store, component) => {
+    const domString = ReactDOM.renderToString(
+      <Html
+        assets={assets}
+        store={store}
+        component={component}
+        />
+    );
+    return `<!doctype html>\n${domString}`;
+  }
+
+  function hydrateOnClient(res) {
+    res.send(renderToDom(webpackIsomorphicTools.assets(), store));
   }
 
   if (__DISABLE_SSR__) {
-    hydrateOnClient();
+    hydrateOnClient(res);
     return;
   }
 
-  match({ history, routes: getRoutes(store), location: req.originalUrl }, (error, redirectLocation, renderProps) => {
+  const renderHTMLPayload = (error, redirectLocation, renderProps) => {
     if (redirectLocation) {
       res.redirect(redirectLocation.pathname + redirectLocation.search);
     } else if (error) {
       console.error('ROUTER ERROR:', pretty.render(error));
       res.status(500);
-      hydrateOnClient();
+      hydrateOnClient(res);
     } else if (renderProps) {
       loadOnServer({...renderProps, store, helpers: {client}}).then(() => {
         const component = (
@@ -87,17 +75,21 @@ app.use((req, res) => {
 
         res.status(200);
 
-        global.navigator = {userAgent: req.headers['user-agent']};
+        global.navigator = {
+          userAgent: req.headers['user-agent']
+        };
 
-        res.send('<!doctype html>\n' +
-          ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()} component={component} store={store}/>));
+        res.send(renderToDom(webpackIsomorphicTools.assets(), store, component));
       });
     } else {
       res.status(404).send('Not found');
     }
-  });
+  }
+
+  match({ history, routes: getRoutes(store), location: req.originalUrl }, renderHTMLPayload);
 });
 
+/* This can go into listen.js */
 if (config.port) {
   server.listen(config.port, (err) => {
     if (err) {
