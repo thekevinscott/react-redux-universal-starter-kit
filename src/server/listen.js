@@ -1,6 +1,4 @@
-import config from '../config';
-
-export default (server) => {
+export default (server, config) => {
   if (config.port) {
     server.listen(config.port, err => {
       if (err) {

@@ -1,3 +1,4 @@
+import PrettyError from 'pretty-error';
 import { loadOnServer } from 'redux-async-connect';
 import { Provider } from 'react-redux';
 
@@ -8,6 +9,8 @@ import {
   handleSuccess,
   hydrateOnClient,
 } from './utils';
+
+const pretty = new PrettyError();
 
 export default (res, store, client) => {
   return (error, redirectLocation, renderProps) => {
