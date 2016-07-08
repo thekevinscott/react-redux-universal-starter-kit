@@ -3,13 +3,18 @@
   "env": {
     "browser": true,
     "node": true,
-    "mocha": true
   },
   "rules": {
+    "import/default": 0,
     "no-console": 0,
+
+    "import/no-duplicates": 0,
+    "import/named": 0,
+    "import/namespace": 0,
   },
   "plugins": [
-    "react", "import"
+    "react",
+    "import"
   ],
   "settings": {
     "import/parser": "babel-eslint",
