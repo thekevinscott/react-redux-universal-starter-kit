@@ -12,9 +12,6 @@ try {
 } catch (err) {
   throw new Error('Error parsing .babelrc: ' + err);
 }
-
-var path = require('path');
-var rootDir = path.resolve(__dirname, '..');
 /*
  * Isomorphic constants.
  */
@@ -37,9 +34,4 @@ if (__DEVELOPMENT__) {
   }
 }
 
-var WebpackIsomorphicTools = require('webpack-isomorphic-tools');
-global.webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/webpack-isomorphic-tools'))
-.development(__DEVELOPMENT__)
-.server(rootDir, function() {
-  require('../src/server');
-});
+require('../src/server');
