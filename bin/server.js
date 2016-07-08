@@ -26,9 +26,12 @@ if (__DEVELOPMENT__) {
     hook: true,
     ignore: /(\/\.|~$|\.json|\.scss$)/i
   };
+  var piping = require('piping');
+  console.log('piping', piping);
 
-  if (!require('piping')(pipingConfig)) {
-    throw new Error('Error with piping config');
+  if (!piping(pipingConfig)) {
+    console.error('piping did not load');
+    //throw new Error('Error with piping config');
   }
 }
 
