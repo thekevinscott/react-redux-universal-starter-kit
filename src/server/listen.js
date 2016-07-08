@@ -1,5 +1,8 @@
-export default (server, config) => {
+import http from 'http';
+
+export default (app, config) => {
   if (config.port) {
+    const server = new http.Server(app);
     server.listen(config.port, err => {
       if (err) {
         console.error(err);
