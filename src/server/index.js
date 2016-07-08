@@ -7,5 +7,5 @@ const rootDir = path.resolve(__dirname, '../..');
 global.webpackIsomorphicTools = new tool(toolConfig)
 .development(__DEVELOPMENT__)
 .server(rootDir, () => {
-  require('./bootstrap');
+  require('./bootstrap')();
 });

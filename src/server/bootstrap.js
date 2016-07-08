@@ -11,9 +11,11 @@ import {
   handleRoutes
 } from './app';
 
-const app = new express();
+export default () => {
+  const app = new express();
 
-configure(app);
-handleRoutes(app);
-proxy(app, config);
-listen(app, config);
+  configure(app);
+  handleRoutes(app);
+  proxy(app, config);
+  listen(app, config);
+}
