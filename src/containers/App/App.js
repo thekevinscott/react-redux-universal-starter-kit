@@ -14,7 +14,7 @@ export default class App extends Component {
   render() {
     return (
       <div>
-        I am the App !!!!2
+        App 3
       </div>
     );
   }
