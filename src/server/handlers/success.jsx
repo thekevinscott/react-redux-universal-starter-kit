@@ -3,7 +3,7 @@ import { ReduxAsyncConnect, loadOnServer } from 'redux-async-connect';
 import { Provider } from 'react-redux';
 import { renderToDom } from '../utils';
 
-export default (client, store, renderProps) => {
+export default (client, store, renderProps, isomorphicTools) => {
   const helpers = {
     client
   };
@@ -21,7 +21,7 @@ export default (client, store, renderProps) => {
     );
 
     const payload = renderToDom({
-      assets: webpackIsomorphicTools.assets(),
+      assets: isomorphicTools.assets(),
       store,
       component
     });

@@ -4,8 +4,8 @@ import toolConfig from '../../webpack/webpack-isomorphic-tools';
 
 const rootDir = path.resolve(__dirname, '../..');
 
-global.webpackIsomorphicTools = new tool(toolConfig)
+const isomorphicTools = new tool(toolConfig)
 .development(__DEVELOPMENT__)
 .server(rootDir, () => {
-  require('./bootstrap')(global.webpackIsomorphicTools);
+  require('./bootstrap')(isomorphicTools);
 });

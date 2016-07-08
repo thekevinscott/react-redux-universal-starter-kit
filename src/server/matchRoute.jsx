@@ -11,25 +11,25 @@ import {
 
 const pretty = new PrettyError();
 
-const parseMatchedRoute = (error, redirectLocation, renderProps, client, req, store) => {
+const parseMatchedRoute = (error, redirectLocation, renderProps, client, req, store, isomorphicTools) => {
   if (redirectLocation) {
     return handleRedirect( redirectLocation);
   } else if (error) {
     console.error(`Routing error: ${pretty.render(error)}`);
-    return handleError(store);
+    return handleError(store, isomorphicTools);
   } else if (renderProps) {
     global.navigator = {
       userAgent: req.headers['user-agent']
     };
-    return handleSuccess(client, store, renderProps);
+    return handleSuccess(client, store, renderProps, isomorphicTools);
   }
 
   return handleNotFound();
 }
 
-export default (req, res, store, client) => {
+export default (req, res, store, client, isomorphicTools) => {
   return (error, redirectLocation, renderProps) => {
-    return parseMatchedRoute(error, redirectLocation, renderProps, client, req, store).then((parsedRoute) => {
+    return parseMatchedRoute(error, redirectLocation, renderProps, client, req, store, isomorphicTools).then((parsedRoute) => {
       const {
         status,
         payload,

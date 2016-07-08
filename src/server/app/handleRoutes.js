@@ -30,6 +30,6 @@ export default (app, isomorphicTools) => {
       history,
       routes: getRoutes(store),
       location: req.originalUrl
-    }, matchRoute(req, res, store, client));
+    }, matchRoute(req, res, store, client, isomorphicTools));
   });
 }
