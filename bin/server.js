@@ -1,20 +1,25 @@
 #!/usr/bin/env node
-var babelrc = require('fs').readFileSync('./.babelrc');
+var fs = require('fs');
 
+/* Attempt to parse .babelrc */
 try {
-  require('babel-register')(JSON.parse(babelrc));
+  var babelrc = fs.readFileSync('./.babelrc');
+  var parsedBabel = JSON.parse(babelrc)
+  require('babel-register')(parsedBabel);
 } catch (err) {
-  console.error('Error parsing .babelrc', err);
+  throw new Error('Error parsing .babelrc: ' + err);
 }
+
 var path = require('path');
 var rootDir = path.resolve(__dirname, '..');
-/**
- * Define isomorphic constants.
+/*
+ * Isomorphic constants.
  */
 global.__CLIENT__ = false;
 global.__SERVER__ = true;
-global.__DISABLE_SSR__ = false;  // <----- DISABLES SERVER SIDE RENDERING FOR ERROR DEBUGGING
 global.__DEVELOPMENT__ = process.env.NODE_ENV !== 'production';
+// An option for disabling server side rendering
+global.__DISABLE_SSR__ = false;
 
 if (__DEVELOPMENT__) {
   if (!require('piping')({
