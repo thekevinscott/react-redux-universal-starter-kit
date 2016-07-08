@@ -12,10 +12,10 @@
  * turned off (for instance, when developing)
  * we'll render directly to the server.
  */
-import renderToDom from './renderToDom';
+import renderToDOM from './renderToDOM';
 
 export default (store, assets) => {
-  return renderToDom({
+  return renderToDOM({
     assets,
     store
   });

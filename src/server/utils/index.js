@@ -1,2 +1,2 @@
 export hydrateOnClient from './hydrateOnClient';
-export renderToDom from './renderToDom';
+export renderToDOM from './renderToDOM';

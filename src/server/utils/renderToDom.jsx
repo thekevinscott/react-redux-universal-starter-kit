@@ -8,17 +8,6 @@ import ReactDOM from 'react-dom/server';
 import serialize from 'serialize-javascript';
 import Helmet from 'react-helmet';
 
-export default ({ assets, component, store }) => {
-  const domString = ReactDOM.renderToString(
-    <Html
-      assets={assets}
-      component={component}
-      store={store}
-      />
-  );
-  return `<!doctype html>\n${domString}`;
-};
-
 /**
  * Component to render HTML on the server, wrapping
  * the string output of the route component.
@@ -49,3 +38,14 @@ class Html extends Component {
     );
   }
 }
+
+export default ({ assets, component, store }) => {
+  const domString = ReactDOM.renderToString(
+    <Html
+      assets={assets}
+      component={component}
+      store={store}
+      />
+  );
+  return `<!doctype html>\n${domString}`;
+};
