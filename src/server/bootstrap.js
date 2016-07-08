@@ -11,7 +11,7 @@ import {
   handleRoutes
 } from './app';
 
-export default () => {
+export default (isomorphicTools) => {
   const app = new express();
 
   configure(app);

@@ -34,7 +34,6 @@ const parseMatchedRoute = (error, redirectLocation, renderProps, client, req, st
 export default (req, res, store, client) => {
   return (error, redirectLocation, renderProps) => {
     return parseMatchedRoute(error, redirectLocation, renderProps, client, req, store).then((parsedRoute) => {
-      console.log(parsedRoute);
       const {
         status,
         payload,
