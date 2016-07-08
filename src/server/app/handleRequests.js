@@ -7,7 +7,7 @@ import { syncHistoryWithStore } from 'react-router-redux';
 import { match } from 'react-router';
 
 import ApiClient from 'shared/helpers/ApiClient';
-import createStore from 'shared/redux/create';
+import createStore from 'shared/redux/createStore';
 import getRoutes from 'shared/routes';
 
 import { hydrateOnClient } from '../utils';

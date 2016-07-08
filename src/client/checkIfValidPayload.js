@@ -1,3 +1,10 @@
+/*
+ * A sanity check to see if the server has returned
+ * a valid payload.
+ *
+ * If not, alert the developer so long as we're
+ * not in production.
+ */
 import React from 'react';
 
 export default (dest) => {

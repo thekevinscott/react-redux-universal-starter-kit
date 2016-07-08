@@ -4,7 +4,7 @@ import { Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import useScroll from 'scroll-behavior/lib/useStandardScroll';
 
-import createStore from 'shared/redux/create';
+import createStore from 'shared/redux/createStore';
 import ApiClient from 'shared/helpers/ApiClient';
 import getRoutes from 'shared/routes';
 import renderIntoDOM from './renderIntoDOM.jsx';

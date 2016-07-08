@@ -1,3 +1,12 @@
+/*
+ * Renders a component into the DOM,
+ * given a specific destination div
+ * and a store.
+ *
+ * If no dev tools are present, will
+ * wrap the component in a surrounding div
+ * to mimic the appearance of the dev tools.
+ */
 import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
