@@ -1,5 +1,11 @@
 #!/usr/bin/env node
-require('../server.babel'); // babel registration (runtime transpilation for node)
+var babelrc = require('fs').readFileSync('../.babelrc');
+
+try {
+  require('babel-register')(JSON.parse(babelrc));
+} catch (err) {
+  console.error('Error parsing .babelrc', err);
+}
 var path = require('path');
 var rootDir = path.resolve(__dirname, '..');
 /**
