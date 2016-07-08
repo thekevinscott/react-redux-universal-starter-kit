@@ -28,47 +28,49 @@ export default (app, isomorphicTools) => {
    * Any incoming requests get routed through
    * the main function 
    */
-  app.use(main);
+  app.use(main(isomorphicTools));
 }
 
-const main = (req, res) => {
-  if (__DEVELOPMENT__) {
-    // Do not cache webpack stats: the script file would change since
-    // hot module replacement is enabled in the development env
-    isomorphicTools.refresh();
-  }
+const main = (isomorphicTools) => {
+  return (req, res) => {
+    if (__DEVELOPMENT__) {
+      // Do not cache webpack stats: the script file would change since
+      // hot module replacement is enabled in the development env
+      isomorphicTools.refresh();
+    }
 
-  if (config.DISABLE_SERVER_RENDERING) {
-    return res.send(hydrateOnClient(store, isomorphicTools.assets()));
-  }
+    if (config.DISABLE_SERVER_RENDERING) {
+      return res.send(hydrateOnClient(store, isomorphicTools.assets()));
+    }
 
-  const client = new ApiClient(req);
-  const memoryHistory = createHistory(req.originalUrl);
-  const store = createStore(memoryHistory, client);
-  const history = syncHistoryWithStore(memoryHistory, store);
+    const client = new ApiClient(req);
+    const memoryHistory = createHistory(req.originalUrl);
+    const store = createStore(memoryHistory, client);
+    const history = syncHistoryWithStore(memoryHistory, store);
 
-  return match({
-    history,
-    routes: getRoutes(store),
-    location: req.originalUrl
-  }, (error, redirectLocation, renderProps) => {
-    return parseMatchedRoute(error, redirectLocation, renderProps, client, store, isomorphicTools).then((parsedRoute) => {
-      const {
-        status,
-        payload,
-        redirect
-      } = parsedRoute;
+    return match({
+      history,
+      routes: getRoutes(store),
+      location: req.originalUrl
+    }, (error, redirectLocation, renderProps) => {
+      return parseMatchedRoute(error, redirectLocation, renderProps, client, store, isomorphicTools).then((parsedRoute) => {
+        const {
+          status,
+          payload,
+          redirect
+        } = parsedRoute;
 
-      if (redirect) {
-        return res.redirect(redirect);
-      }
+        if (redirect) {
+          return res.redirect(redirect);
+        }
 
-      res.status(status);
-      return res.send(payload);
-    }).catch((err) => {
-      console.error('error with route handler', err);
+        res.status(status);
+        return res.send(payload);
+      }).catch((err) => {
+        console.error('error with route handler', err);
+      });
     });
-  });
+  };
 }
 
 /*
