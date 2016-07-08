@@ -16,6 +16,9 @@ import { ReduxAsyncConnect, loadOnServer } from 'redux-async-connect';
 import createHistory from 'react-router/lib/createMemoryHistory';
 import {Provider} from 'react-redux';
 import getRoutes from '../routes';
+import renderToDom from './utils/renderToDom';
+import matchRoute from './matchRoute';
+import hydrateOnClient from './utils/hydrateOnClient';
 
 const pretty = new PrettyError();
 const app = new Express();
@@ -38,55 +41,16 @@ app.use((req, res) => {
   const store = createStore(memoryHistory, client);
   const history = syncHistoryWithStore(memoryHistory, store);
 
-  const renderToDom = (assets, store, component) => {
-    const domString = ReactDOM.renderToString(
-      <Html
-        assets={assets}
-        store={store}
-        component={component}
-        />
-    );
-    return `<!doctype html>\n${domString}`;
-  }
-
-  function hydrateOnClient(res) {
-    res.send(renderToDom(webpackIsomorphicTools.assets(), store));
-  }
-
   if (__DISABLE_SSR__) {
-    hydrateOnClient(res);
+    res.send(hydrateOnClient(store));
     return;
   }
 
-  const renderHTMLPayload = (error, redirectLocation, renderProps) => {
-    if (redirectLocation) {
-      res.redirect(redirectLocation.pathname + redirectLocation.search);
-    } else if (error) {
-      console.error('ROUTER ERROR:', pretty.render(error));
-      res.status(500);
-      hydrateOnClient(res);
-    } else if (renderProps) {
-      loadOnServer({...renderProps, store, helpers: {client}}).then(() => {
-        const component = (
-          <Provider store={store} key="provider">
-            <ReduxAsyncConnect {...renderProps} />
-          </Provider>
-        );
-
-        res.status(200);
-
-        global.navigator = {
-          userAgent: req.headers['user-agent']
-        };
-
-        res.send(renderToDom(webpackIsomorphicTools.assets(), store, component));
-      });
-    } else {
-      res.status(404).send('Not found');
-    }
-  }
-
-  match({ history, routes: getRoutes(store), location: req.originalUrl }, renderHTMLPayload);
+  match({
+    history,
+    routes: getRoutes(store),
+    location: req.originalUrl
+  }, matchRoute(res, store, client));
 });
 
 /* This can go into listen.js */
