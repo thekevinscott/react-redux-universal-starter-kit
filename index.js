@@ -12,4 +12,4 @@ try {
 } catch (err) {
   throw new Error('Error parsing .babelrc: ' + err);
 }
-require('../src/server');
+require('./src/server');

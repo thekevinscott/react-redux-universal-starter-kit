@@ -4,10 +4,6 @@ This is forked from [erikras's awesome repo](https://github.com/erikras/react-re
 
 I've removed CSS, font, and API stuff, and refactored the server bits.
 
-## `bin`
-
-This folder contains any "executable" javascript files called by `node` within npm scripts.
-
 ## `src`
 
 server

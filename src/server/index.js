@@ -13,7 +13,7 @@ global.__CLIENT__ = false;
 global.__SERVER__ = true;
 global.__DEVELOPMENT__ = process.env.NODE_ENV !== 'production';
 
-if (config.ENV === 'development') {
+if (__DEVELOPMENT__) {
   const pipingConfig = {
     hook: true,
     ignore: /(\/\.|~$|\.json|\.scss$)/i
@@ -27,7 +27,7 @@ if (config.ENV === 'development') {
 }
 
 const isomorphicTools = new tool(toolConfig)
-.development(config.ENV === 'development')
+.development(__DEVELOPMENT__)
 .server(rootDir, () => {
   bootstrap(isomorphicTools);
 });
