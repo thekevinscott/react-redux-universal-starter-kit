@@ -6,7 +6,7 @@ import { asyncConnect } from 'redux-async-connect';
     const promises = [];
 
     return Promise.all(promises);
-  }
+  },
 }])
 
 export default class App extends Component {
