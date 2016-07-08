@@ -26,10 +26,10 @@ export default (app) => {
       return res.send(hydrateOnClient(store));
     }
 
-    match({
+    return match({
       history,
       routes: getRoutes(store),
       location: req.originalUrl
-    }, matchRoute(res, store, client));
+    }, matchRoute(req, res, store, client));
   });
 }

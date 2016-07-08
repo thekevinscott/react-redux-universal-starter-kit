@@ -5,11 +5,6 @@ import config from '../config';
 import { ReduxAsyncConnect, loadOnServer } from 'redux-async-connect';
 
 import {
-  renderToDom,
-  hydrateOnClient,
-} from './utils';
-
-import {
   configure,
   proxy,
   listen,
