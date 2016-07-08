@@ -12,13 +12,17 @@
     "development": {
       "plugins": [
         "typecheck",
-        ["react-transform", {
-            "transforms": [{
+        [
+          "react-transform", 
+          {
+            "transforms": [
+              {
                 "transform": "react-transform-catch-errors",
                 "imports": ["react", "redbox-react"]
               }
             ]
-        }]
+          }
+        ]
       ]
     }
   }

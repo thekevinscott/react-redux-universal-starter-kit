@@ -1,11 +1,13 @@
 #!/usr/bin/env node
-var babelrc = require('fs').readFileSync('../.babelrc');
+var babelrc = require('fs').readFileSync('./.babelrc');
 
 try {
-  require('babel-register')(JSON.parse(babelrc));
+  const parsedBabel = JSON.parse(babelrc);
+  require('babel-register')(parsedBabel);
 } catch (err) {
-  console.error('Error parsing .babelrc', err);
+  throw new Error('Error parsing .babelrc: ' + err);
 }
+
 var path = require('path');
 var rootDir = path.resolve(__dirname, '..');
 /**
