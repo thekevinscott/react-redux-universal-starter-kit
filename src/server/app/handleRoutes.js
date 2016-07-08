@@ -7,6 +7,7 @@ import matchRoute from '../matchRoute';
 import { match } from 'react-router';
 
 import { hydrateOnClient } from '../utils';
+import config from '../../config';
 
 export default (app) => {
   app.use((req, res) => {
@@ -21,7 +22,7 @@ export default (app) => {
     const store = createStore(memoryHistory, client);
     const history = syncHistoryWithStore(memoryHistory, store);
 
-    if (__DISABLE_SSR__) {
+    if (config.DISABLE_SERVER_RENDERING) {
       return res.send(hydrateOnClient(store));
     }
 

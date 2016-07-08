@@ -18,8 +18,6 @@ try {
 global.__CLIENT__ = false;
 global.__SERVER__ = true;
 global.__DEVELOPMENT__ = process.env.NODE_ENV !== 'production';
-// An option for disabling server side rendering
-global.__DISABLE_SSR__ = true;
 
 if (__DEVELOPMENT__) {
   const pipingConfig = {
