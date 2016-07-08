@@ -1,3 +1,6 @@
+/*
+ * This kicks off the express server.
+ */
 import http from 'http';
 
 export default (app, config) => {

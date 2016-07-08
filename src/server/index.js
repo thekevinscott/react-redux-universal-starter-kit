@@ -1,3 +1,11 @@
+/*
+ * Entry point for the server.
+ *
+ * Defines constants, sets up piping,
+ * and starts up the isomorphic
+ * webpack server.
+ */
+
 import path from 'path';
 import tool from 'webpack-isomorphic-tools';
 import toolConfig from '../../webpack/webpack-isomorphic-tools';

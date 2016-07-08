@@ -3,7 +3,7 @@ import { ReduxAsyncConnect, loadOnServer } from 'redux-async-connect';
 import { Provider } from 'react-redux';
 import { renderToDom } from '../utils';
 
-export default (client, store, renderProps, isomorphicTools) => {
+export default (store, client, renderProps, isomorphicTools) => {
   const helpers = {
     client
   };
@@ -15,8 +15,12 @@ export default (client, store, renderProps, isomorphicTools) => {
 
   return loadOnServer(serverArgs).then(() => {
     const component = (
-      <Provider store={store} key="provider">
-        <ReduxAsyncConnect {...renderProps} />
+      <Provider
+        store={store}
+      >
+        <ReduxAsyncConnect
+          {...renderProps}
+        />
       </Provider>
     );
 

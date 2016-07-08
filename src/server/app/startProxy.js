@@ -1,3 +1,9 @@
+/*
+ * Sets up the proxy server for an external API.
+ *
+ * This doesn't do much right now,
+ * so use your imagination.
+ */
 import httpProxy from 'http-proxy';
 
 export default (app, config) => {

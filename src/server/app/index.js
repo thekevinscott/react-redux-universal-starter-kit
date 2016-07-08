@@ -1,4 +1,4 @@
 export configure from './configure';
-export proxy from './proxy';
-export listen from './listen';
-export handleRoutes from './handleRoutes';
+export startProxy from './startProxy';
+export startServer from './startServer';
+export handleRequests from './handleRequests';
