@@ -7,7 +7,7 @@ export default class App extends Component {
   render() {
     return (
       <div>
-        I am the App !!!!2
+        I am the App v1!!!!{Math.random()}
       </div>
     );
   }
