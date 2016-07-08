@@ -3,12 +3,12 @@ import Helmet from 'react-helmet';
 import { push } from 'react-router-redux';
 import config from '../../config';
 
-export default class App extends Component {
+export default class Home extends Component {
   render() {
-    console.log('i am the app');
+    console.log('i am the home');
     return (
       <div>
-        I am the app.
+        I am the home.
         {this.props.children}
       </div>
     );
