@@ -1,3 +1,7 @@
+/*
+ * This handles a successful request from a matched
+ * route on the server.
+ */
 import React from 'react';
 import { ReduxAsyncConnect, loadOnServer } from 'redux-async-connect';
 import { Provider } from 'react-redux';
