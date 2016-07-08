@@ -22,13 +22,16 @@ global.__DEVELOPMENT__ = process.env.NODE_ENV !== 'production';
 global.__DISABLE_SSR__ = false;
 
 if (__DEVELOPMENT__) {
-  if (!require('piping')({
+  const pipingConfig = {
     hook: true,
     ignore: /(\/\.|~$|\.json|\.scss$)/i
-  })) { return; }
+  };
+
+  if (!require('piping')(pipingConfig)) {
+    throw new Error('Error with piping config');
+  }
 }
 
-// https://github.com/halt-hammerzeit/webpack-isomorphic-tools
 var WebpackIsomorphicTools = require('webpack-isomorphic-tools');
 global.webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/webpack-isomorphic-tools'))
 .development(__DEVELOPMENT__)
