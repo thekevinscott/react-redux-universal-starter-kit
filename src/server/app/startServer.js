@@ -15,4 +15,4 @@ export default (app, config) => {
   } else {
     throw new Error('Please specify a port');
   }
-}
+};

@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import { Link } from 'react-router';
 import { asyncConnect } from 'redux-async-connect';
 
 @asyncConnect([{
@@ -9,16 +10,12 @@ import { asyncConnect } from 'redux-async-connect';
   },
 }])
 
-export default class App extends Component {
-  static propTypes = {
-    children: PropTypes.object.isRequired,
-  }
-
+export default class Home extends Component {
   render() {
     return (
       <div>
-        App
-        {this.props.children}
+        This is Home.
+        <Link to="/test">Go to test</Link>
       </div>
     );
   }

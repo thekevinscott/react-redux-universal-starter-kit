@@ -64,12 +64,20 @@ module.exports = Object.assign({}, shared, {
   module: {
     loaders: [
       ...shared.module.loaders,
-      { test: /\.jsx?$/, exclude: /node_modules/, loaders: ['babel?' + JSON.stringify(babelLoaderQuery), 'eslint-loader']},
+      //{ test: /\.jsx?$/, exclude: /node_modules/, loaders: ['babel?' + JSON.stringify(babelLoaderQuery), 'eslint-loader']},
+      { test: /\.jsx?$/, exclude: /node_modules/, loaders: ['babel?' + JSON.stringify(babelLoaderQuery)]},
     ],
   },
   entry: {
     main: [
-      'webpack-hot-middleware/client?path=http://' + host + ':' + port + '/__webpack_hmr',
+      'webpack-hot-middleware/client?' + [
+        // turns off console logging
+        //'quiet=true',
+        // allows webpack to force reload when stuck
+        //'reload=true',
+        'path=http://' + host + ':' + port + '/__webpack_hmr',
+      ].join('&'),
+      'webpack-hot-middleware/client?reload=true&path=http://' + host + ':' + port + '/__webpack_hmr',
       ...shared.entry.main,
     ]
   },

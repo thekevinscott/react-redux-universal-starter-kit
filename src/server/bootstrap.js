@@ -6,24 +6,24 @@
  * and finally starts the server.
  */
 
-import express from 'express';
-import React from 'react';
+import Express from 'express';
+//import React from 'react';
 import config from 'config';
 
-import { ReduxAsyncConnect, loadOnServer } from 'redux-async-connect';
+//import { ReduxAsyncConnect, loadOnServer } from 'redux-async-connect';
 
 import {
   configure,
   startProxy,
   startServer,
-  handleRequests
+  handleRequests,
 } from './app';
 
 export default (isomorphicTools) => {
-  const app = new express();
+  const app = new Express();
 
   configure(app);
   startProxy(app, config);
   handleRequests(app, isomorphicTools);
   startServer(app, config);
-}
+};

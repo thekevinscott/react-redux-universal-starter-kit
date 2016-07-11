@@ -13,8 +13,8 @@ import getRoutes from 'shared/routes';
 import { hydrateOnClient } from '../utils';
 import config from 'config';
 
-import { loadOnServer } from 'redux-async-connect';
-import { Provider } from 'react-redux';
+//import { loadOnServer } from 'redux-async-connect';
+//import { Provider } from 'react-redux';
 
 import {
   handleError,
@@ -23,14 +23,36 @@ import {
   handleSuccess,
 } from '../handlers';
 
+/*
+ * Routes a match request to the appropriate handler.
+ *
+ * Every handler returns a promise, that will resolve with
+ * either a redirect parameter, or a status and payload
+ * parameter.
+ */
+const parseMatchedRoute = (
+  error,
+  redirectLocation,
+  renderProps,
+  client,
+  store,
+  isomorphicTools
+) => {
+  if (redirectLocation) {
+    return handleRedirect(redirectLocation);
+  } else if (error) {
+    console.error('Routing error', error);
+    const payload = hydrateOnClient(store, isomorphicTools.assets());
+    return handleError(store).then(response => ({
+      ...response,
+      payload,
+    }));
+  } else if (renderProps) {
+    return handleSuccess(store, client, renderProps, isomorphicTools);
+  }
 
-export default (app, isomorphicTools) => {
-  /* 
-   * Any incoming requests get routed through
-   * the main function 
-   */
-  app.use(main(isomorphicTools));
-}
+  return handleNotFound();
+};
 
 const main = (isomorphicTools) => {
   return (req, res) => {
@@ -40,25 +62,32 @@ const main = (isomorphicTools) => {
       isomorphicTools.refresh();
     }
 
-    if (config.DISABLE_SERVER_RENDERING) {
-      return res.send(hydrateOnClient(store, isomorphicTools.assets()));
-    }
-
     const client = new ApiClient(req);
     const memoryHistory = createHistory(req.originalUrl);
     const store = createStore(memoryHistory, client);
     const history = syncHistoryWithStore(memoryHistory, store);
 
+    if (config.DISABLE_SERVER_RENDERING) {
+      return res.send(hydrateOnClient(store, isomorphicTools.assets()));
+    }
+
     return match({
       history,
       routes: getRoutes(store),
-      location: req.originalUrl
+      location: req.originalUrl,
     }, (error, redirectLocation, renderProps) => {
-      return parseMatchedRoute(error, redirectLocation, renderProps, client, store, isomorphicTools).then((parsedRoute) => {
+      return parseMatchedRoute(
+        error,
+        redirectLocation,
+        renderProps,
+        client,
+        store,
+        isomorphicTools
+      ).then((parsedRoute) => {
         const {
           status,
           payload,
-          redirect
+          redirect,
         } = parsedRoute;
 
         if (redirect) {
@@ -72,28 +101,12 @@ const main = (isomorphicTools) => {
       });
     });
   };
-}
+};
 
-/*
- * Routes a match request to the appropriate handler.
- *
- * Every handler returns a promise, that will resolve with
- * either a redirect parameter, or a status and payload
- * parameter.
- */
-const parseMatchedRoute = (error, redirectLocation, renderProps, client, store, isomorphicTools) => {
-  if (redirectLocation) {
-    return handleRedirect(redirectLocation);
-  } else if (error) {
-    console.error('Routing error', error);
-    const payload = hydrateOnClient(store, isomorphicTools.assets());
-    return handleError(store).then(response => ({
-      ...response,
-      payload
-    }));
-  } else if (renderProps) {
-    return handleSuccess(store, client, renderProps, isomorphicTools);
-  }
-
-  return handleNotFound();
-}
+export default (app, isomorphicTools) => {
+  /*
+   * Any incoming requests get routed through
+   * the main function
+   */
+  app.use(main(isomorphicTools));
+};

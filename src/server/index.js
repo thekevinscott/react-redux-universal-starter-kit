@@ -7,10 +7,9 @@
  */
 
 import path from 'path';
-import tool from 'webpack-isomorphic-tools';
+import WebpackIsomorphicTools from 'webpack-isomorphic-tools';
 import toolConfig from '../../webpack/webpack-isomorphic-tools';
 import bootstrap from './bootstrap';
-import config from '../config';
 
 const rootDir = path.resolve(__dirname, '../..');
 
@@ -23,18 +22,23 @@ global.__DEVELOPMENT__ = process.env.NODE_ENV !== 'production';
 
 if (__DEVELOPMENT__) {
   const pipingConfig = {
-    hook: true,
-    ignore: /(\/\.|~$|\.json|\.scss$)/i
+    //hook: true,
+    ignore: /(\/\.|~$|\.json|\.scss$)/i,
   };
   const piping = require('piping');
 
-  if (!piping(pipingConfig)) {
-    console.error('piping did not load');
-    //throw new Error('Error with piping config');
+  const fn = (reloader) => {
+    reloader.on('reloaded', () => {
+      console.log('Reloading server');
+    });
+  };
+
+  if (!piping(pipingConfig, fn)) {
+    console.error('Piping did not load');
   }
 }
 
-const isomorphicTools = new tool(toolConfig)
+const isomorphicTools = new WebpackIsomorphicTools(toolConfig)
 .development(__DEVELOPMENT__)
 .server(rootDir, () => {
   bootstrap(isomorphicTools);

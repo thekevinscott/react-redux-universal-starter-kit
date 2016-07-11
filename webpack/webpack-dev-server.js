@@ -7,6 +7,7 @@ var compiler = webpack(webpackConfig);
 
 var host = config.host || 'localhost';
 var port = (Number(config.port) + 1) || 3001;
+
 var serverOptions = {
   contentBase: 'http://' + host + ':' + port,
   quiet: true,
@@ -28,6 +29,6 @@ app.listen(port, function onAppListening(err) {
   if (err) {
     console.error(err);
   } else {
-    console.info('==> 🚧  Webpack development server listening on port %s', port);
+    console.info('Webpack development server listening on port %s', port);
   }
 });
